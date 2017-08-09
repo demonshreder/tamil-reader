@@ -1,0 +1,73 @@
+{{ template "base.html" .}} {{ define "css" }}
+<style>
+  @import url(//fonts.googleapis.com/earlyaccess/notosanstamil.css);
+  div.slider-image {
+
+    max-width: 100%;
+    max-height: 20rem;
+    overflow: auto;
+    border: 0.1em solid #dedede;
+    border-radius:0.2em;
+  }
+
+  .tamil {
+     font-family: 'Noto Sans Tamil', sans-serif; 
+  }
+
+  .ui.form textarea {
+    margin-top:1em;
+    font-size: 1.3em;
+    color:rgba(0,0,0,0.8);
+    height:20rem;
+  }
+</style>
+{{ end }} {{ define "body" }}
+
+
+<div class="ui grid centered container">
+  <div class="fourteen wide column">
+    <div class="ui image fluid centered slider-image">
+      <img src="/static/img/akan_aanuuru4-000.jpg">
+    </div><br>
+    <hr>
+    
+<form class="ui form">
+  <div class="field">
+    <textarea class="textarea tamil" type="text" placeholder="Tamil Text" >
+
+அசநானூற்றினை யான்‌ சில வருவுங்களுர்கு முன்‌ லேது
+ஸமஸ்கானம்‌ மகா வித்வான்‌ ஸ்ரீ உ, வே. ராகவையங்கார்‌
+ஸ்வாமிகளின்‌ பரிசோதனையையும்‌ சென்னை லெக்ஸிகன்‌
+கமிட்டித்‌ தலைமைத்‌ தமிழ்ப்‌ பண்டிதர்‌ ஸ்ரீ உ. வே. மு. ராக
+வையங்கார்‌ ஸ்வாமிகள்‌ ஆராய்ச்சியையும்‌ துணையாசச்கொண்டு
+அச்சிட்டபோ,து அதற்குப்‌ பழைய உரைபில்லாத பூல்‌
+களுக்கு ஒரு குறிப்புரை எழுதி வெளியிடவேண்டுமென்னும்‌
+அவா அபினும்‌ அக்காலத்து
+எனக்குற்ற பல விபத்துக்களாலும்‌ பொருள்‌ முட்டுப்பாட்‌
+டாலும்‌ அகை நிறைவேற்ற இயலா கவனாய்‌ மூலக்தை மட்டும்‌
+வெளியிட்டேன்‌. பின்னர்‌ அன்று தொட்டு இன்றளவும்‌
+அவ்வவா என்‌ *மனத்தினிங்காது. அதிசரித்‌.ஐக்கொண்டே
+வந்ததேனும்‌, கொடிய இருமல்‌ இரைப்பு முதலிய கோய்‌
+களினால்‌ யாதும்‌ செய்யமாட்டாதவனாபினேன்‌.
+</textarea>
+  </div>
+  
+  <div class="inline field">
+   <div class="ui checkbox">
+  <input type="checkbox" name="example" id="example">
+  <label for="example">Mark this page as completed</label>
+</div>
+  </div>
+  <button class="ui button" type="submit">Save</button>
+</form>
+  
+    </div>
+  </div>
+</div>
+{{end}}
+
+
+{{define "js"}}
+<script  type="text/javascript" src="/static/js/jquery-3.1.1.min.js"></script> 
+<script>$('.ui.checkbox').checkbox();</script>
+{{end}}

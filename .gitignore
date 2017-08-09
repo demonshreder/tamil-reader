@@ -1,15 +1,42 @@
 
-# Binaries for programs and plugins
-*.exe
-*.dll
+<<<<<<< HEAD
+*.pdf
+*.jpg
+=======
+>>>>>>> cb86ddb3ee3187f8690a5ebef792c882c2310ad4
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
 *.so
-*.dylib
 
-# Test binary, build with `go test -c`
+# Architecture specific extensions/prefixes
+*.[568vq]
+[568vq].out
+
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
+
+*.exe
 *.test
+*.prof
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+# Ignore self-signed certs
+cert.pem
+private.key
 
-# Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
-.glide/
+# Ignore config files
+config.toml
+database.toml
+
+# Ignore compiled output directory
+public/assets
+node_modules
+dist
+
+# Ignore binary and zip
+tamil-reader
+tamil-reader.exe
+tamil-reader.zip

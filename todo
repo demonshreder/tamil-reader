@@ -1,0 +1,28 @@
+JS tamil typing
+On screen keyboard
+Annotate
+PDF upload
+    - Show name
+    - Batch?
+
+Gamification
+    - Profile
+    - Ranks
+    - Badges
+Book metadata
+'Digital copy exists'
+Performance Optimization
+    - Process queue
+        - Process upload and conversion one by one
+    - Limit storage
+        - Delete PDFs after conversion, keep the URL
+        - Delete images after conversion
+
+Post conversion luxury
+    - Auto concatenate
+<<<<<<< HEAD
+    - Export as epub
+    
+=======
+    - 
+>>>>>>> cb86ddb3ee3187f8690a5ebef792c882c2310ad4

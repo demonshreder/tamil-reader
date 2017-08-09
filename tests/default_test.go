@@ -6,7 +6,7 @@ import (
 	"testing"
 	"runtime"
 	"path/filepath"
-	_ "github.com/demonshreder/tamil-reader/routers"
+	_ "github.com/demonshreder/tamil-reader/github.com/demonshreder/tamil-reader/routers"
 
 	"github.com/astaxie/beego"
 	. "github.com/smartystreets/goconvey/convey"

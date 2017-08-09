@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FSHM Digital</title>
+    <link rel="stylesheet" href="/static/semantic/semantic.min.css">
+    <link rel="shortcut icon" type="image/x-icon"/>
+    <style>
+    .body{
+      background-color:#ededed
+    }
+    a, a:hover{
+      color:rgba(0,0, 0, .87)
+    }
+    .ui.button{
+      color: rgba(0,0,0,.8);
+    }
+    html,body{
+    }
+    </style>
+     {{ block "css" . }}{{ end }}
+  </head>
+  <body>
+  
+  <div class=" ui grid centered container" style="margin-top:1em;">
+    <div class="fourteen wide column">
+    <h1 class="ui header"><a href='{{urlfor "HomeController.Get" }}'>FSHM Digital</a></h1>
+    <p>Help preserve history, knowledge and culture.</p>
+    <hr>
+    </div>
+  </div>
+{{ block "body" . }}{{ end }}
+       
+       
+{{ block "js" . }}{{ end }}
+
+  </body>
+</html>
