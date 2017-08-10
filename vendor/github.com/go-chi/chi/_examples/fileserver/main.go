@@ -1,4 +1,4 @@
-package routers
+package main
 
 import (
 	"net/http"
@@ -6,21 +6,25 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/demonshreder/tamil-reader/views"
 	"github.com/go-chi/chi"
 )
 
-func Router() chi.Router {
-
+func main() {
 	r := chi.NewRouter()
-	r.Get("/", views.Home)
-	r.Get("/new/", views.New)
-	r.Post("/new/", views.NewBook)
+
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("hi"))
+	})
+
 	workDir, _ := os.Getwd()
-	filesDir := filepath.Join(workDir, "static")
-	FileServer(r, "/static", http.Dir(filesDir))
-	return r
+	filesDir := filepath.Join(workDir, "files")
+	FileServer(r, "/files", http.Dir(filesDir))
+
+	http.ListenAndServe(":3333", r)
 }
+
+// FileServer conveniently sets up a http.FileServer handler to serve
+// static files from a http.FileSystem.
 func FileServer(r chi.Router, path string, root http.FileSystem) {
 	if strings.ContainsAny(path, "{}*") {
 		panic("FileServer does not permit URL parameters.")

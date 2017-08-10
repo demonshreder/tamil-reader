@@ -1,9 +1,5 @@
 package models
 
-import (
-	"github.com/astaxie/beego/orm"
-)
-
 // Book stores the metadata
 type Book struct {
 	ID     int
@@ -22,11 +18,4 @@ type Page struct {
 	PageNo    int
 	Complete  int
 	Book      *Book `orm:"rel(fk)"` // Reverse relationship (optional)
-}
-
-func init() {
-	// o := orm.NewOrm()
-	// o.Using("default")
-	// Need to register model in init
-	orm.RegisterModel(new(Book), new(Page))
 }
