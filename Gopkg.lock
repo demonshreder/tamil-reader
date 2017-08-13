@@ -7,9 +7,27 @@
   revision = "25354a53cca531cb2efd3f1d3c565d90ff04d802"
   version = "v3.1.5"
 
+[[projects]]
+  name = "github.com/jinzhu/gorm"
+  packages = [".","dialects/postgres"]
+  revision = "5174cc5c242a728b435ea2be8a2f7f998e15429b"
+  version = "v1.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/jinzhu/inflection"
+  packages = ["."]
+  revision = "1c35d901db3da928c72a72d8458480cc9ade058f"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/lib/pq"
+  packages = [".","hstore","oid"]
+  revision = "e42267488fe361b9dc034be7a6bffef5b195bceb"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "719a54b1c9237045393b3f374f35174e36b5c1e7d9e373bc23b071c5a3e1c72f"
+  inputs-digest = "e2a2fc0462c67bb952217a12e48fd56fa66ae692e4f79857e28963abd3bd9c90"
   solver-name = "gps-cdcl"
   solver-version = 1

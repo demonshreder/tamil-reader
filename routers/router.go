@@ -15,7 +15,7 @@ func Router() chi.Router {
 	r := chi.NewRouter()
 	r.Get("/", views.Home)
 	r.Get("/new/", views.New)
-	r.Post("/new/", views.NewBook)
+	r.Post("/new/", views.New)
 	workDir, _ := os.Getwd()
 	filesDir := filepath.Join(workDir, "static")
 	FileServer(r, "/static", http.Dir(filesDir))
