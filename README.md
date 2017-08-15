@@ -5,7 +5,8 @@
 2. bash
 3. gs (ghostscript)
 4. gm (graphicsmagick)
-5. postgres
+5. tesseract 4.0 with eng & ta data
+6. postgres
  
 
 ### database settings
@@ -17,7 +18,7 @@
 ```
 go run main.go
 ```
-Listens on 127.0.0.1:4000
+Listens on http://127.0.0.1:4000
 
 
 

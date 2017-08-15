@@ -9,7 +9,6 @@ Gamification
     - Profile
     - Ranks
     - Badges
-Book metadata
 'Digital copy exists'
 Performance Optimization
     - Process queue
@@ -17,7 +16,7 @@ Performance Optimization
     - Limit storage
         - Delete PDFs after conversion, keep the URL
         - Delete images after conversion
-
+Mark photo as another language?
 Post conversion luxury
     - Auto concatenate
     - Export as epub

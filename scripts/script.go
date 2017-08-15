@@ -1,7 +1,7 @@
 package scripts
 
 import (
-	"log"
+	"fmt"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -18,21 +18,43 @@ func CountPages(path string) int {
 }
 
 // PdfToImages converts name pdf to dest images
-func PdfToImages(src, dest string, book *models.Book) {
-	// gs -q -dNODISPLAY -c "(akan_aanuuru.pdf) (r) file runpdfbegin pdfpagecount = quit";
+func PdfToImages(book models.Book) {
 	// gm convert -verbose -trim -density 300 akan_aanuuru.pdf +adjoin akan/akan_aanuuru-%03d.jpg
-	cmd := exec.Command("gm", "convert", "-verbose", "-trim", "-density", "300", src, "+adjoin", dest)
-	err := cmd.Start()
-	if err != nil {
-		log.Fatal(err)
+	for i := 1; i < book.Total; i++ {
+		fullPath := strings.Trim(book.Path, ".pdf") + "-" + strconv.Itoa(i) + ".jpg"
+		cmd := exec.Command("bash", "-c", "gm convert -verbose -trim -density 300 "+book.Path+"["+strconv.Itoa(i)+"] "+fullPath)
+		_, err := cmd.Output()
+		if err != nil {
+			panic(err)
+		}
+		text := ImageToText(fullPath)
+		page := models.Page{
+			ImagePath: fullPath,
+			PageNo:    i,
+			Complete:  0,
+			BookID:    uint(book.ID),
+			Text:      text,
+		}
+
+		models.ORM.NewRecord(&page)
+		models.ORM.Create(&page)
+		fmt.Println("inserted", i)
 	}
-	// log.Printf("Waiting for command to finish...")
-	err = cmd.Wait()
-	// log.Printf("Command finished with error: %v", err)
-	ImageToText()
 }
 
-//ImageToText converts the images to text and populates the database with it
-func ImageToText() {
-
+//ImageToText converts the images to text and returns the OCR text
+func ImageToText(path string) string {
+	// tesseract akan/akan_aanuuru-000.jpg  stdout --oem 1 -l tam
+	// fmt.Println("tooser action")
+	// cmd := exec.Command("tesseract", path, "stdout", "--oem", "1", "-l", "tam")
+	cmd := exec.Command("bash", "-c", "tesseract "+path+" stdout --oem 1 -l tam")
+	fmt.Println(cmd)
+	out, err := cmd.Output()
+	fmt.Println(out)
+	if err != nil {
+		panic(err)
+	}
+	text := string(out)
+	// fmt.Println("tesseracted")
+	return text
 }

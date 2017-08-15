@@ -41,12 +41,8 @@ func New(w http.ResponseWriter, r *http.Request) {
 		bookName := r.FormValue("book-name")
 		bookPath := workDir + "/raw/" + bookName
 		os.Mkdir(bookPath, 0755)
-		fmt.Println(bookPath)
 		bookPath = bookPath + "/" + bookName + ".pdf"
-		fmt.Println(bookPath)
-		// book.Close()
-		pdf, err := os.OpenFile(bookPath, os.O_WRONLY|os.O_CREATE, 0755)
-		fmt.Println(err)
+		pdf, _ := os.OpenFile(bookPath, os.O_WRONLY|os.O_CREATE, 0755)
 		io.Copy(pdf, book)
 		bookR := models.Book{
 			Name:    bookName,
@@ -61,10 +57,10 @@ func New(w http.ResponseWriter, r *http.Request) {
 		ORM.NewRecord(bookR)
 		ORM.Create(&bookR)
 		defer book.Close()
-
 		defer pdf.Close()
+		go scripts.PdfToImages(bookR)
 	}
+
 	t.Execute(w, nil)
-	// go scripts.PdfToImages(bookPath)
 
 }
