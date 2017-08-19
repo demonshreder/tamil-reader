@@ -27,38 +27,25 @@
 <div class="ui grid centered container">
   <div class="fourteen wide column">
     <div class="ui image fluid centered slider-image">
-      <img src="/static/img/akan_aanuuru4-000.jpg">
+      <img src="{{.imageURL}}">
     </div><br>
     <hr>
     
-<form class="ui form">
+<form class="ui form" method="POST" action="/save/page/">
+  <input type="hidden" value="{{.pageID}}" name="pageID">
   <div class="field">
-    <textarea class="textarea tamil" type="text" placeholder="Tamil Text" >
-
-அசநானூற்றினை யான்‌ சில வருவுங்களுர்கு முன்‌ லேது
-ஸமஸ்கானம்‌ மகா வித்வான்‌ ஸ்ரீ உ, வே. ராகவையங்கார்‌
-ஸ்வாமிகளின்‌ பரிசோதனையையும்‌ சென்னை லெக்ஸிகன்‌
-கமிட்டித்‌ தலைமைத்‌ தமிழ்ப்‌ பண்டிதர்‌ ஸ்ரீ உ. வே. மு. ராக
-வையங்கார்‌ ஸ்வாமிகள்‌ ஆராய்ச்சியையும்‌ துணையாசச்கொண்டு
-அச்சிட்டபோ,து அதற்குப்‌ பழைய உரைபில்லாத பூல்‌
-களுக்கு ஒரு குறிப்புரை எழுதி வெளியிடவேண்டுமென்னும்‌
-அவா அபினும்‌ அக்காலத்து
-எனக்குற்ற பல விபத்துக்களாலும்‌ பொருள்‌ முட்டுப்பாட்‌
-டாலும்‌ அகை நிறைவேற்ற இயலா கவனாய்‌ மூலக்தை மட்டும்‌
-வெளியிட்டேன்‌. பின்னர்‌ அன்று தொட்டு இன்றளவும்‌
-அவ்வவா என்‌ *மனத்தினிங்காது. அதிசரித்‌.ஐக்கொண்டே
-வந்ததேனும்‌, கொடிய இருமல்‌ இரைப்பு முதலிய கோய்‌
-களினால்‌ யாதும்‌ செய்யமாட்டாதவனாபினேன்‌.
+    <textarea class="textarea tamil" name="pageText" type="text" placeholder="Tamil Text" >
+{{.pageText}}
 </textarea>
   </div>
   
   <div class="inline field">
    <div class="ui checkbox">
-  <input type="checkbox" name="example" id="example">
-  <label for="example">Mark this page as completed</label>
+  <input type="checkbox" name="pageComplete" id="pageCheck" value="true">
+  <label for="pageCheck">Mark this page as completed</label>
 </div>
   </div>
-  <button class="ui button" type="submit">Save</button>
+  <button class="ui button primary" type="submit" >Save</button>
 </form>
   
     </div>

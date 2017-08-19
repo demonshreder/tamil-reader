@@ -50,11 +50,10 @@ func ImageToText(path string) string {
 	cmd := exec.Command("bash", "-c", "tesseract "+path+" stdout --oem 1 -l tam")
 	fmt.Println(cmd)
 	out, err := cmd.Output()
-	fmt.Println(out)
+	// fmt.Println(out)
 	if err != nil {
 		panic(err)
 	}
-	text := string(out)
 	// fmt.Println("tesseracted")
-	return text
+	return string(out)
 }

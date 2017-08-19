@@ -3,7 +3,7 @@
 
 [[projects]]
   name = "github.com/go-chi/chi"
-  packages = ["."]
+  packages = [".","middleware"]
   revision = "25354a53cca531cb2efd3f1d3c565d90ff04d802"
   version = "v3.1.5"
 
@@ -25,9 +25,27 @@
   packages = [".","hstore","oid"]
   revision = "e42267488fe361b9dc034be7a6bffef5b195bceb"
 
+[[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "f006c2ac4710855cf0f916dd6b77acf6b048dc6e"
+  version = "v1.0.3"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "eb71ad9bd329b5ac0fd0148dd99bd62e8be8e035"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["unix","windows"]
+  revision = "43e60d72a8e2bd92ee98319ba9a384a0e9837c08"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e2a2fc0462c67bb952217a12e48fd56fa66ae692e4f79857e28963abd3bd9c90"
+  inputs-digest = "20740bba6df2c3a1982f495eb415bb9ebe4eecb419715ccdd98bdd71e97b6644"
   solver-name = "gps-cdcl"
   solver-version = 1
