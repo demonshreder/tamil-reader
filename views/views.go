@@ -1,7 +1,6 @@
 package views
 
 import (
-	"fmt"
 	"html/template"
 	"io"
 	"log"
@@ -25,12 +24,16 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	templatePath := filepath.Join(workDir, "templates/")
 	t := template.Must(template.ParseFiles(templatePath+"/base.html", templatePath+"/home.html"))
 	page := models.Page{}
-	ORM.First(&page)
-	pageID := strconv.Itoa(page.ID)
+	ORM.Where("Complete = ?", 0).First(&page)
+	book := models.Book{ID: int(page.BookID)}
+	ORM.Find(&book)
 	p := map[string]string{
-		"imageURL": strings.Replace(page.ImagePath, workDir, "", -1),
-		"pageText": page.Text,
-		"pageID":   pageID,
+		"imageURL":  strings.Replace(page.ImagePath, workDir, "", -1),
+		"pageText":  page.Text,
+		"pageID":    strconv.Itoa(page.ID),
+		"bookName":  book.Name,
+		"current":   strconv.Itoa(page.PageNo),
+		"totalPage": strconv.Itoa(book.Total),
 	}
 	err := t.Execute(w, p)
 	if err != nil {
@@ -56,7 +59,7 @@ func New(w http.ResponseWriter, r *http.Request) {
 			OCR:     false,
 			RawName: bookH.Filename,
 			Total:   scripts.CountPages(bookPath),
-			Year:    "2017",
+			Year:    r.FormValue("year"),
 		}
 		ORM.NewRecord(bookR)
 		ORM.Create(&bookR)
@@ -71,15 +74,14 @@ func New(w http.ResponseWriter, r *http.Request) {
 func SavePage(w http.ResponseWriter, r *http.Request) {
 	pageID, _ := strconv.Atoi(r.FormValue("pageID"))
 	pageComp := 0
-	page := models.Page{
-		ID:   pageID,
-		Text: r.FormValue("pageText"),
-	}
 	if r.FormValue("pageComplete") == "true" {
 		pageComp = 1
 	}
-	fmt.Println(pageComp)
-
+	page := models.Page{
+		ID:       pageID,
+		Text:     r.FormValue("pageText"),
+		Complete: pageComp,
+	}
 	ORM.Model(&page).Update(page)
 	http.Redirect(w, r, "/", 302)
 }
