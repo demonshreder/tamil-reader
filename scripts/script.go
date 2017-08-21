@@ -12,20 +12,23 @@ import (
 //CountPages counts the total number of pages in the PDF file
 func CountPages(path string) int {
 	countCmd := exec.Command("bash", "-c", "gs -q -dNODISPLAY -c '("+path+") (r) file runpdfbegin pdfpagecount = quit';")
-	countOut, _ := countCmd.Output()
+	countOut, err := countCmd.Output()
+	fmt.Println(countOut, err)
 	count, _ := strconv.Atoi(strings.TrimSpace(string(countOut)))
 	return count
 }
 
 // PdfToImages converts name pdf to dest images
 func PdfToImages(book models.Book) {
+	fmt.Println("fuccking started")
 	// gm convert -verbose -trim -density 300 akan_aanuuru.pdf +adjoin akan/akan_aanuuru-%03d.jpg
 	for i := 1; i < book.Total; i++ {
 		fullPath := strings.Trim(book.Path, ".pdf") + "-" + strconv.Itoa(i) + ".jpg"
 		cmd := exec.Command("bash", "-c", "gm convert -verbose -trim -density 300 "+book.Path+"["+strconv.Itoa(i)+"] "+fullPath)
+		fmt.Println(cmd)
 		_, err := cmd.Output()
 		if err != nil {
-			panic(err)
+			fmt.Println(err)
 		}
 		text := ImageToText(fullPath)
 		page := models.Page{
@@ -52,7 +55,7 @@ func ImageToText(path string) string {
 	out, err := cmd.Output()
 	// fmt.Println(out)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	// fmt.Println("tesseracted")
 	return string(out)

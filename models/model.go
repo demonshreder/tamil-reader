@@ -31,6 +31,16 @@ type Page struct {
 	Text      string
 }
 
+// User stores every single page linked to its book
+type User struct {
+	ID        int
+	ImagePath string
+	PageNo    int
+	Complete  int
+	BookID    uint
+	Text      string
+}
+
 // ORM is the global DB
 var ORM, err = gorm.Open("postgres", "user=tamil dbname=tamil_reader sslmode=disable")
 
