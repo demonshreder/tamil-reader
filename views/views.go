@@ -13,6 +13,8 @@ import (
 	"strconv"
 	"strings"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"golang.org/x/crypto/blake2b"
 
 	"github.com/demonshreder/tamil-reader/scripts"
@@ -26,7 +28,87 @@ var templatePath = filepath.Join(workDir, "templates/")
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(templatePath+"/base.html", templatePath+"/home.html"))
+	p := map[string][]string{
+		"books": []string{"cooool", "kekek"},
+	}
+	t.Execute(w, p)
+
+}
+
+// UserLogin checks username and passwords and logs the user in
+func UserLogin(w http.ResponseWriter, r *http.Request) {
+	// t := template.Must(template.ParseFiles(templatePath+"/base.html", templatePath+"/userPage.html"))
+	if r.Method == "POST" {
+		username := r.FormValue("username")
+		password := r.FormValue("password")
+		user := models.User{Username: username}
+		if username == "" {
+			http.Redirect(w, r, "/user/", 302)
+		} else if password == "" {
+			http.Redirect(w, r, "/user/", 302)
+		} else {
+			models.ORM.Where("Username = ?", username).First(&user)
+			if models.ORM.NewRecord(&user) {
+				http.Redirect(w, r, "/user/", 302)
+			} else {
+				err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+				if err != nil {
+					http.Redirect(w, r, "/user/", 302)
+				}
+				http.Redirect(w, r, "/", 302)
+
+			}
+
+		}
+	}
+	http.Redirect(w, r, "/", 302)
+
+}
+
+// UserPage just renders the template to show user login and register page
+func UserPage(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles(templatePath+"/base.html", templatePath+"/userPage.html"))
 	t.Execute(w, nil)
+
+}
+
+// UserRegister accepts POST data and registers the user
+func UserRegister(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "POST" {
+		username := r.FormValue("username")
+		pass1 := r.FormValue("password")
+		pass2 := r.FormValue("password2")
+		email := r.FormValue("email")
+
+		user := models.User{}
+
+		if username == "" {
+			http.Redirect(w, r, "/user/", 302)
+		} else if pass1 == "" || pass2 == "" {
+			http.Redirect(w, r, "/user/", 302)
+		} else if pass1 != pass2 {
+			http.Redirect(w, r, "/user/", 302)
+		} else if email == "" {
+			http.Redirect(w, r, "/user/", 302)
+		} else {
+			models.ORM.Where("Username = ?", username).First(&user)
+			if !models.ORM.NewRecord(&user) {
+				http.Redirect(w, r, "/user/", 302)
+			} else {
+				hash, _ := bcrypt.GenerateFromPassword([]byte(pass1), 7)
+				user = models.User{
+					Username: username,
+					Password: string(hash),
+					Email:    email,
+				}
+				fmt.Println("success")
+				models.ORM.NewRecord(&user)
+				models.ORM.Save(&user)
+			}
+		}
+	}
+	http.Redirect(w, r, "/", 302)
 
 }
 func New(w http.ResponseWriter, r *http.Request) {
@@ -96,5 +178,5 @@ func PageSave(w http.ResponseWriter, r *http.Request) {
 		Complete: pageComp,
 	}
 	ORM.Model(&page).Update(page)
-	http.Redirect(w, r, "/page/edit", 302)
+	http.Redirect(w, r, "/page/edit/", 302)
 }

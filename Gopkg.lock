@@ -4,8 +4,8 @@
 [[projects]]
   name = "github.com/go-chi/chi"
   packages = [".","middleware"]
-  revision = "25354a53cca531cb2efd3f1d3c565d90ff04d802"
-  version = "v3.1.5"
+  revision = "ba73ba0623af32e4e5f09880177e73bd78d98852"
+  version = "v3.2.0"
 
 [[projects]]
   name = "github.com/jinzhu/gorm"
@@ -33,19 +33,25 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/unrolled/secure"
+  packages = ["."]
+  revision = "a80c09da9c7bd84aaf622507fd339a9281b8acd1"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["ssh/terminal"]
+  packages = ["blake2b","ssh/terminal"]
   revision = "eb71ad9bd329b5ac0fd0148dd99bd62e8be8e035"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix","windows"]
-  revision = "43e60d72a8e2bd92ee98319ba9a384a0e9837c08"
+  revision = "07c182904dbd53199946ba614a412c61d3c548f5"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "20740bba6df2c3a1982f495eb415bb9ebe4eecb419715ccdd98bdd71e97b6644"
+  inputs-digest = "cae570c0e45027e838c62c0ed8654bf5fe0e1552440678b250115411c962a675"
   solver-name = "gps-cdcl"
   solver-version = 1

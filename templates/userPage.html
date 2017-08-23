@@ -15,27 +15,44 @@ i.icon{
 
 {{ define "body" }}
 <div class="ui grid centered container">
-  <div class="fourteen wide column">
-		<h3>List of books</h3>
-		<div class="ui items">
-				{{range .books}}
-				<div class="item">
-					<div class="content">
-						<a class="header">Header</a>
-						<div class="meta">
-							<span>Description</span>
-						</div>
-						<div class="description">
-							<p></p>
-						</div>
-						<div class="extra">
-							Additional Details
-						</div>
-					</div>
-				</div>
-				{{end}}
-			</div>
+    <div class="six wide column" style="padding-right:4rem;border-right:outset 1px ">
+        <h3>Register</h3>
+      <form class="ui form" action='/user/register/' method="POST" enctype="multipart/form-data">
+      <div class="field">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Username">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Password">
+      </div>
+      <div class="field">
+          <label>Confirm Password</label>
+          <input type="password" name="password2" placeholder="Password">
+        </div>
+      <div class="field">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="Email">
+        </div>
+      
+      <button class="ui button" type="submit">Register</button>
+    </form>
+     </div>
+  <div class="six wide column" style="padding-left:4rem;">
+    <h3>Login</h3>
+  <form class="ui form" action='/user/login/' method="POST" enctype="multipart/form-data">
+  <div class="field">
+    <label>Username</label>
+    <input type="text" name="username" placeholder="Username">
+  </div>
+  <div class="field">
+    <label>Password</label>
+    <input type="password" name="password" placeholder="Password">
+  </div>
+  <button class="ui button" type="submit">Login</button>
+</form>
  </div>
+
 </div>
 {{end}}
 {{ define "script"}}

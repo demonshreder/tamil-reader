@@ -12,22 +12,31 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/sirupsen/logrus"
+	"github.com/unrolled/secure"
 )
 
+// Router is a chi.Router instance and routes all links through the webapp
 func Router() chi.Router {
+	secureMiddleware := secure.New(secure.Options{
+		FrameDeny:    true,
+		AllowedHosts: []string{"127.0.0.1:4000", "fshmdigital.ddns.net"},
+	})
 	logger := logrus.New()
 	logger.Formatter = &logrus.JSONFormatter{
 		// disable, as we set our own
 		DisableTimestamp: true,
 	}
-
 	r := chi.NewRouter()
+	r.Use(secureMiddleware.Handler)
 	r.Use(NewStructuredLogger(logger))
 	r.Get("/", views.Home)
 	r.Get("/new/", views.New)
 	r.Post("/new/", views.New)
 	r.Post("/page/save/", views.PageSave)
 	r.Get("/page/edit/", views.PageEdit)
+	r.Get("/user/", views.UserPage)
+	r.Post("/user/login/", views.UserLogin)
+	r.Post("/user/register/", views.UserRegister)
 	workDir, _ := os.Getwd()
 	filesDir := filepath.Join(workDir, "static")
 	rawDir := filepath.Join(workDir, "raw")
@@ -35,6 +44,8 @@ func Router() chi.Router {
 	FileServer(r, "/raw", http.Dir(rawDir))
 	return r
 }
+
+// FileServer is just here to serve static files
 func FileServer(r chi.Router, path string, root http.FileSystem) {
 	if strings.ContainsAny(path, "{}*") {
 		panic("FileServer does not permit URL parameters.")
@@ -52,10 +63,12 @@ func FileServer(r chi.Router, path string, root http.FileSystem) {
 	}))
 }
 
+// NewStructuredLogger is copied from go-chi page to include logrus code
 func NewStructuredLogger(logger *logrus.Logger) func(next http.Handler) http.Handler {
 	return middleware.RequestLogger(&StructuredLogger{logger})
 }
 
+// StructuredLogger is a struct
 type StructuredLogger struct {
 	Logger *logrus.Logger
 }

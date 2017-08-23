@@ -33,19 +33,17 @@ type Page struct {
 
 // User stores every single page linked to its book
 type User struct {
-	ID        int
-	ImagePath string
-	PageNo    int
-	Complete  int
-	BookID    uint
-	Text      string
+	ID       int
+	Username string
+	Password string
+	Email    string
 }
 
 // ORM is the global DB
 var ORM, err = gorm.Open("postgres", "user=tamil dbname=tamil_reader sslmode=disable")
 
 func main() {
-	ORM.CreateTable(&Page{}, &Book{})
+	ORM.CreateTable(&Page{}, &Book{}, &User{})
 	fmt.Println(err)
 	fmt.Println("done")
 	defer ORM.Close()
