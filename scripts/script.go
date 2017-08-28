@@ -1,15 +1,22 @@
 package scripts
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"os/exec"
 	"strconv"
 	"strings"
 
+	"golang.org/x/crypto/blake2b"
+
 	"github.com/demonshreder/tamil-reader/models"
 )
 
-//CountPages counts the total number of pages in the PDF file
+// CookieHMACSecret is what the name says
+var CookieHMACSecret = []byte("YaathumOoreYaavarumKelirTheethumNandrumPirantharaVaaraSaathalum")
+
+//CountPages counts the total number of pages in the PDF file using ghostscript via bash
 func CountPages(path string) int {
 	countCmd := exec.Command("bash", "-c", "gs -q -dNODISPLAY -c '("+path+") (r) file runpdfbegin pdfpagecount = quit';")
 	countOut, err := countCmd.Output()
@@ -18,7 +25,7 @@ func CountPages(path string) int {
 	return count
 }
 
-// PdfToImages converts name pdf to dest images
+// PdfToImages converts name pdf to dest images via graphicsmagick using bash
 func PdfToImages(book models.Book) {
 	fmt.Println("fuccking started")
 	// gm convert -verbose -trim -density 300 akan_aanuuru.pdf +adjoin akan/akan_aanuuru-%03d.jpg
@@ -45,7 +52,8 @@ func PdfToImages(book models.Book) {
 	}
 }
 
-//ImageToText converts the images to text and returns the OCR text
+//ImageToText converts the images to text and returns the OCR text using
+// Tesseract v4.0 via bash
 func ImageToText(path string) string {
 	// tesseract akan/akan_aanuuru-000.jpg  stdout --oem 1 -l tam
 	// fmt.Println("tooser action")
@@ -59,4 +67,24 @@ func ImageToText(path string) string {
 	}
 	// fmt.Println("tesseracted")
 	return string(out)
+}
+
+// HashMAC computes the blake2b HMAC based on input string,
+// and [64]secretKey, if nil is randomly generated via crypt/rand
+// HashMAC returns hex-encoded HMAC and secret.
+func HashMAC(message string, secretKey []byte) (hash, secret string) {
+	// HMAC = hash(key + hash(key + message))
+	key := make([]byte, 64)
+	if secretKey == nil {
+		rand.Read(key)
+	} else if len(secretKey) > 64 {
+		key = secretKey[:64]
+	} else {
+		key = secretKey[:len(secretKey)]
+	}
+	mac, _ := blake2b.New512(key)
+	kmac, _ := blake2b.New512(key)
+	mac.Write([]byte(message))
+	kmac.Write(mac.Sum(nil))
+	return hex.EncodeToString(kmac.Sum(nil)), hex.EncodeToString(key)
 }

@@ -7,7 +7,11 @@ V1.0
 'Digital copy exists'
 Mark photo as another language?
 On screen keyboard
-Secure 'pageID' - MAC?
+CSRF
+Session
+    - Renew every load?
+    - Show last edited book
+    - 
 
 Later
 -----------
@@ -25,6 +29,7 @@ Gamification
 Performance Optimization
     - Process queue
         - Process upload and conversion one by one
+        - Context processing
     - Limit storage
         - Delete PDFs after conversion, keep the URL
         - Delete images after conversion

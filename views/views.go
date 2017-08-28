@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -26,11 +27,16 @@ var ORM = models.ORM
 var workDir, _ = os.Getwd()
 var templatePath = filepath.Join(workDir, "templates/")
 
+// Home sweet home for the web app
 func Home(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(templatePath+"/base.html", templatePath+"/home.html"))
+	cookie, _ := r.Cookie("username")
+	username := strings.Split(cookie.Value, ":")
 	p := map[string][]string{
-		"books": []string{"cooool", "kekek"},
+		"books":    []string{"cooool", "kekek"},
+		"username": []string{username[0]},
 	}
+
 	t.Execute(w, p)
 
 }
@@ -55,19 +61,38 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					http.Redirect(w, r, "/user/", 302)
 				}
+				mc, _ := scripts.HashMAC(username, scripts.CookieHMACSecret)
+				cookieExpiryTime := time.Now().Add(1209600 * time.Second)
+				// fmt.Println(fmt.Sprint(cookieExpiry))
+				cookieExpiryByte, _ := cookieExpiryTime.MarshalText()
+				cookie := http.Cookie{
+					Name:     "username",
+					Value:    username + ":" + mc,
+					Path:     "/",
+					Expires:  cookieExpiryTime,
+					HttpOnly: true,
+				}
+				session := models.Session{
+					UserID: uint(user.ID),
+					Hash:   string(mc),
+					End:    string(cookieExpiryByte),
+					Expiry: cookieExpiryTime,
+				}
+				models.ORM.Create(&session)
+				http.SetCookie(w, &cookie)
 				http.Redirect(w, r, "/", 302)
-
 			}
-
 		}
+
+		// fmt.Println(http.)
 	}
-	http.Redirect(w, r, "/", 302)
+	// http.Redirect(w, r, "/", 302)
 
 }
 
 // UserPage just renders the template to show user login and register page
 func UserPage(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles(templatePath+"/base.html", templatePath+"/userPage.html"))
+	t := template.Must(template.ParseFiles(templatePath+"/base.html", templatePath+"/userLogReg.html"))
 	t.Execute(w, nil)
 
 }
@@ -142,7 +167,13 @@ func New(w http.ResponseWriter, r *http.Request) {
 		ORM.Create(&bookR)
 		go scripts.PdfToImages(bookR)
 	}
-	t.Execute(w, nil)
+	cookie, _ := r.Cookie("username")
+	username := strings.Split(cookie.Value, ":")
+	p := map[string][]string{
+		"username": []string{username[0]},
+	}
+
+	t.Execute(w, p)
 
 }
 
@@ -152,6 +183,8 @@ func PageEdit(w http.ResponseWriter, r *http.Request) {
 	ORM.Where("Complete = ?", 0).First(&page)
 	book := models.Book{ID: int(page.BookID)}
 	ORM.Find(&book)
+	cookie, _ := r.Cookie("username")
+	username := strings.Split(cookie.Value, ":")
 	p := map[string]string{
 		"imageURL":  strings.Replace(page.ImagePath, workDir, "", -1),
 		"pageText":  page.Text,
@@ -159,6 +192,7 @@ func PageEdit(w http.ResponseWriter, r *http.Request) {
 		"bookName":  book.Name,
 		"current":   strconv.Itoa(page.PageNo),
 		"totalPage": strconv.Itoa(book.Total),
+		"username":  username[0],
 	}
 	err := t.Execute(w, p)
 	if err != nil {

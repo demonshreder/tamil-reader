@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -17,8 +18,9 @@ type Book struct {
 	OCR     bool
 	RawName string
 	Path    string
-	Pages   []Page
 	Total   int
+	Pages   []Page
+	UserID  uint
 }
 
 // Page stores every single page linked to its book
@@ -27,8 +29,9 @@ type Page struct {
 	ImagePath string
 	PageNo    int
 	Complete  int
-	BookID    uint
 	Text      string
+	BookID    uint
+	UserID    uint
 }
 
 // User stores every single page linked to its book
@@ -37,6 +40,18 @@ type User struct {
 	Username string
 	Password string
 	Email    string
+	Books    []Book
+	Pages    []Page
+	Sessions []Session
+}
+
+// Session stores session for every user
+type Session struct {
+	ID     int
+	UserID uint
+	Hash   string
+	End    string
+	Expiry time.Time
 }
 
 // ORM is the global DB
