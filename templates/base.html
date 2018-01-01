@@ -30,18 +30,17 @@
     <hr> </div>
     <div class="section">
     <a href="/">Home </a>| <a href="/new/"> Upload </a>| <a href="/page/edit/">Edit </a>|
-   
+
     <a href="/user/" style="position:absolute;right:2rem;" > {{range .username}} {{.}} {{else}} Register | Login{{end}} </a>
-    
     <hr> </div>
     <h3>Upload is broken due to lack UserID connection</h3>
     <hr>
     </div>
   </div>
 {{ block "body" . }}{{ end }}
-       
-       
+
 {{ block "js" . }}{{ end }}
 
   </body>
 </html>
+

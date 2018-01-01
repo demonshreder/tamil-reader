@@ -30,15 +30,22 @@ var templatePath = filepath.Join(workDir, "templates/")
 // Home sweet home for the web app
 func Home(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(templatePath+"/base.html", templatePath+"/home.html"))
-	cookie, _ := r.Cookie("username")
-	username := strings.Split(cookie.Value, ":")
-	p := map[string][]string{
-		"books":    []string{"cooool", "kekek"},
-		"username": []string{username[0]},
+	cookie, err := r.Cookie("username")
+	if err == nil {
+		username := strings.Split(cookie.Value, ":")
+		p := map[string][]string{
+			"books":    []string{"cooool", "kekek"},
+			"username": []string{username[0]},
+		}
+		t.Execute(w, p)
+	} else {
+		//p := {}
+		p := map[string][]string{
+			"books":    []string{"cooool", "kekek"},
+			"username": []string{},
+		}
+		t.Execute(w, p)
 	}
-
-	t.Execute(w, p)
-
 }
 
 // UserLogin checks username and passwords and logs the user in
@@ -83,18 +90,15 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 				http.Redirect(w, r, "/", 302)
 			}
 		}
-
 		// fmt.Println(http.)
 	}
 	// http.Redirect(w, r, "/", 302)
-
 }
 
 // UserPage just renders the template to show user login and register page
 func UserPage(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(templatePath+"/base.html", templatePath+"/userLogReg.html"))
 	t.Execute(w, nil)
-
 }
 
 // UserRegister accepts POST data and registers the user
