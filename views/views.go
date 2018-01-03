@@ -33,9 +33,11 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("username")
 	if err == nil {
 		username := strings.Split(cookie.Value, ":")
+		book := ORM.First(&models.Book{})
+		//ORM.First(&book)
 		p := map[string][]string{
-			"books":    []string{"cooool", "kekek"},
-			"username": []string{username[0]},
+			//"books":    []string{"cooool", "kekek"},
+			username: []string{username[0]},
 		}
 		t.Execute(w, p)
 	} else {
