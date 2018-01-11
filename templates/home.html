@@ -16,7 +16,8 @@ i.icon{
 {{ define "body" }}
 <div class="ui grid centered container">
   <div class="fourteen wide column">
-		<h3>List of books</h3>
+		  <h3>List of books</h3>
+   {{.books}}
 		<div class="ui items">
 				{{range .books}}
 				<div class="item">

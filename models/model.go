@@ -55,7 +55,7 @@ type Session struct {
 }
 
 // ORM is the global DB
-var ORM, err = gorm.Open("postgres", "user=tamil dbname=tamil_reader sslmode=disable")
+var ORM, err = gorm.Open("postgres", "user=tamil dbname=tamil_reader sslmode=disable password=tamilrocks")
 
 func main() {
 	ORM.CreateTable(&Page{}, &Book{}, &User{})
